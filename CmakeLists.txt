@@ -8,5 +8,18 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 #making variable
 set(SPACEWARS_GAME_NAME SpaceWars)
+set(SDL_LIB_NAME SDL3)
 
+
+include(FetchContent)
+
+FetchContent_Declare(
+	${SDL_LIB_NAME}
+	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+	GIT_TAG release-3.4.0
+	GIT_SHALLOW FALSE)
+
+FetchContent_MakeAvailable(${SDL_LIB_NAME})
+
+#check other cmake
 add_subdirectory(SpaceWars)
