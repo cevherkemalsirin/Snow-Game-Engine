@@ -4,7 +4,7 @@
 
 namespace sw
 {
-	Application::Application() : m_running(true)
+	Application::Application() : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps)
 	{
 		if (!SDL_Init(SDL_INIT_VIDEO))
 		{
@@ -28,7 +28,13 @@ namespace sw
 	}
 
 	void Application::Run()
-	{
+	{	
+		float accumulatedTime = 0.0f;
+		double frec = static_cast<double>(SDL_GetPerformanceFrequency());
+
+
+		Uint64 lastCounter = SDL_GetPerformanceCounter();
+
 		SDL_Event event;
 		while (m_running)
 		{
@@ -46,6 +52,29 @@ namespace sw
 					break;
 				}
 			}
+
+			Uint64 currentCounter = SDL_GetPerformanceCounter();
+			double frameTime = (currentCounter - lastCounter) / frec;
+			accumulatedTime += static_cast<float>(frameTime);
+			lastCounter = currentCounter;
+
+			while (accumulatedTime >= m_fixedDt)
+			{
+				accumulatedTime -= m_fixedDt;
+				Tick(m_fixedDt);
+			}
+
 		}
+	}
+
+
+	void Application::Tick(float dt)
+	{
+		std::cout << "FPS is : " << 1.0f / dt << " \n";
+	}
+
+	void Application::Render()
+	{
+
 	}
 }
