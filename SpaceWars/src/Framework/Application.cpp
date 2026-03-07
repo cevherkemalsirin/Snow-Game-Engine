@@ -24,7 +24,7 @@ namespace sw
 			std::cout << "Renderer creation failed\n";
 		}
 
-
+		
 	}
 
 	void Application::Run()

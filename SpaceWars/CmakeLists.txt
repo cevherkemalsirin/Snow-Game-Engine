@@ -1,6 +1,17 @@
-add_executable(${SPACEWARS_GAME_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-		                              ${CMAKE_CURRENT_SOURCE_DIR}/Include/Framework/Application.h
-									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Framework/Application.cpp)
+#add_executable(${SPACEWARS_GAME_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+#		                              ${CMAKE_CURRENT_SOURCE_DIR}/Include/Framework/Application.h
+#									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Framework/Application.cpp
+#									  ${CMAKE_CURRENT_SOURCE_DIR}/Include/Graphics/ScreenBuffer.h
+#									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/ScreenBuffer.cpp
+#									  ${CMAKE_CURRENT_SOURCE_DIR}/Include/Graphics/Color.h
+#									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Color.cpp)
+
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+     src/*.h
+     src/*.cpp)
+
+add_executable(SpaceWars ${SOURCES})
+
 
 target_include_directories(${SPACEWARS_GAME_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 
