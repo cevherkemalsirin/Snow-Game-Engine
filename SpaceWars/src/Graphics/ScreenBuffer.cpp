@@ -1,6 +1,6 @@
 #include "Graphics/ScreenBuffer.h"
 
-void ScreenBuffer::SetPixel(uint16_t x, uint16_t y, const Color& color)
+void ScreenBuffer::SetPixel(int x, int y, Color color)
 {
 	if (x < m_width && y < m_height)
 	{
@@ -8,7 +8,7 @@ void ScreenBuffer::SetPixel(uint16_t x, uint16_t y, const Color& color)
 	}
 }
 
-Color ScreenBuffer::GetPixel(uint16_t x, uint16_t y) const
+Color ScreenBuffer::GetPixel(int x, int y) const
 {
 	if (x < m_width && y < m_height)
 	{

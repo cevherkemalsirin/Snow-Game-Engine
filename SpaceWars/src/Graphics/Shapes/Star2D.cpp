@@ -103,10 +103,16 @@ bool Star2D::ContainsPoint(const Vector2D& point) const
 	{
 		Vector2D sp = line.GetPointStart();
 		Vector2D ep = line.GetPointEnd();
-
-		if((sp.GetY() > point.GetY()) != (ep.GetY() > point.GetY())) // skips horizantal line
+		//if statement checks if the point in between the line so it can cross
+		if((sp.GetY() > point.GetY()) != (ep.GetY() > point.GetY())) 
 		{
-			float crossX = sp.GetX() + (point.GetY() - sp.GetY()) * (ep.GetX() - sp.GetX()) / (ep.GetY() - sp.GetY());
+			// if 0.5 then moved half of the way etc.
+			float fractionMoveY = (point.GetY() - sp.GetY()) / (ep.GetY() - sp.GetY());
+			//find movement in x
+			float FractionMoveX = fractionMoveY * (ep.GetX() - sp.GetX());
+			//find the x coordinate of the crossing point
+			float crossX = sp.GetX() + FractionMoveX;
+
 			if (point.GetX() < crossX)
 			{
 				++crossing;
@@ -115,14 +121,8 @@ bool Star2D::ContainsPoint(const Vector2D& point) const
 
 	}
 	// if crossing is odd then it is inside of the star else it is outside of the star
-	if(crossing % 2 == 1)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+		return crossing % 2 == 1;
+	
 	
 }
 
