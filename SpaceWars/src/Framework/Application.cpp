@@ -62,6 +62,7 @@ namespace sw
 			{
 				accumulatedTime -= m_fixedDt;
 				Tick(m_fixedDt);
+				Render();
 			}
 
 		}

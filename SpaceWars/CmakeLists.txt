@@ -7,10 +7,10 @@
 #									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Color.cpp)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-     src/*.h
+     Include/*.h
      src/*.cpp)
 
-add_executable(SpaceWars ${SOURCES})
+add_executable(SpaceWars ${SOURCES} )
 
 
 target_include_directories(${SPACEWARS_GAME_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)

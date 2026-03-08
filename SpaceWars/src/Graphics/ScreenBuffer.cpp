@@ -17,7 +17,7 @@ Color ScreenBuffer::GetPixel(uint16_t x, uint16_t y) const
 	return Color::Black();
 }
 
-void ScreenBuffer::Clear(const Color& color = Color::Black())
+void ScreenBuffer::Clear(const Color& color)
 {
 	std::fill(m_buffer.begin(), m_buffer.end(), color.GetPixelColor());
 }
