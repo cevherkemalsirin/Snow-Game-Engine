@@ -4,15 +4,21 @@
 #									  ${CMAKE_CURRENT_SOURCE_DIR}/Include/Graphics/ScreenBuffer.h
 #									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/ScreenBuffer.cpp
 #									  ${CMAKE_CURRENT_SOURCE_DIR}/Include/Graphics/Color.h
-#									  ${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Color.cpp)
+#		${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Color.cpp)
+
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-     Include/*.h
-     src/*.cpp)
+    Include/*.h
+    src/*.cpp
+)
 
-add_executable(SpaceWars ${SOURCES} )
+add_executable(${SPACEWARS_GAME_NAME} ${SOURCES})
 
+target_include_directories(${SPACEWARS_GAME_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Include/Graphics
+)
 
-target_include_directories(${SPACEWARS_GAME_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)
-
-target_link_libraries(${SPACEWARS_GAME_NAME} PRIVATE SDL3::SDL3)
+target_link_libraries(${SPACEWARS_GAME_NAME} PRIVATE
+    SDL3::SDL3
+)
