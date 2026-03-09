@@ -1,21 +1,25 @@
 #pragma once
+#include "Screen.h"
 
-struct SDL_Window;
-struct SDL_Renderer;
 namespace sw
 {
 	class Application
 	{
 		public:
-			Application();
+			Application(int width, int height, std::string_view appName);
+			inline int Width()const { return m_width; }
+			inline int Height()const { return m_height; }
 			void Run();
 			void Tick(float dt);
 			void Render();
+			
 		private:
-			 SDL_Window* m_window;
-			 SDL_Renderer* m_renderer;
+			int m_width;
+			int m_height;
+			Screen m_screen;
 			bool m_running;
 			const float m_targetFps;
 			float m_fixedDt;
+
 	};
 }

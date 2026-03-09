@@ -1,29 +1,14 @@
 #include "Framework/Application.h"
+#include "Shapes/Rectangle2D.h"
+#include "Shapes/Triangle.h"
+#include "Shapes/Circle2D.h"
 #include <SDL3/SDL.h>
 #include <iostream>
 
 namespace sw
 {
-	Application::Application() : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps)
+	Application::Application(int width, int height, std::string_view appName) : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps), m_screen(width, height, appName),m_width(width),m_height(height)
 	{
-		if (!SDL_Init(SDL_INIT_VIDEO))
-		{
-			std::cout << "SDL failed to initialize\n";
-		}
-
-		m_window = SDL_CreateWindow("SpaceWars", 800, 600, SDL_WINDOW_RESIZABLE);
-		
-		if (m_window == nullptr)
-		{
-			std::cout << "Window creation failed\n";
-		}
-
-		m_renderer = SDL_CreateRenderer(m_window, NULL);
-		if (m_renderer == nullptr)
-		{
-			std::cout << "Renderer creation failed\n";
-		}
-
 		
 	}
 
@@ -62,8 +47,8 @@ namespace sw
 			{
 				accumulatedTime -= m_fixedDt;
 				Tick(m_fixedDt);
-				Render();
 			}
+			Render();
 
 		}
 	}
@@ -76,6 +61,12 @@ namespace sw
 
 	void Application::Render()
 	{
-
+		Rectangle2D rect(Vector2D(0.f, 0.f), 50, 60);
+		Circle2D circ(Vector2D(m_width / 2.f, m_height / 2.f), 200.f);
+		Triangle2D trig(Vector2D(200.f, 1.f), Vector2D(100.f, 100.f), Vector2D(300.f, 100.f));
+		m_screen.ShapeRenderer().DrawShape(&rect, Color::Green(), true);
+		m_screen.ShapeRenderer().DrawShape(circ, 1.f, Color::Red());
+		m_screen.ShapeRenderer().DrawShape(&trig, Color::Orange(),true,Color::Orange(),true);
+		m_screen.Render();
 	}
 }

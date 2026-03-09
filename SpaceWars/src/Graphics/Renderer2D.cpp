@@ -7,19 +7,19 @@
 #include "Shapes/Rectangle2D.h"
 
 
-void Renderer2D::DrawPoint(ScreenBuffer& buffer, int x, int y, Color color) const
+void Renderer2D::DrawPoint( int x, int y, Color color) const
 {
 	buffer.SetPixel(x, y, color);
 }
 
-void Renderer2D::DrawPoint(ScreenBuffer& buffer, const Vector2D& point, Color color) const
+void Renderer2D::DrawPoint(const Vector2D& point, Color color) const
 {
 	int x = static_cast<int>(point.GetX());
 	int y = static_cast<int>(point.GetY());
-	DrawPoint(buffer, x, y, color);
+	DrawPoint(x, y, color);
 }
 
-void Renderer2D::DrawLine(ScreenBuffer& buffer, const Line2D& line, Color color) const
+void Renderer2D::DrawLine(const Line2D& line, Color color) const
 {
 	float x = line.GetPointStart().GetX();
 	float y = line.GetPointStart().GetY();
@@ -31,16 +31,16 @@ void Renderer2D::DrawLine(ScreenBuffer& buffer, const Line2D& line, Color color)
 	float xstep = dx / steps;
 	float ystep = dy / steps;
 
-	DrawPoint(buffer, x, y, color);
+	DrawPoint(x, y, color);
 	for (int i = 1; i < steps; ++i)
 	{
 		x += xstep;
 		y += ystep;
-		DrawPoint(buffer, std::roundf(x), std::roundf(y), color);
+		DrawPoint(std::roundf(x), std::roundf(y), color);
 	}
 }
 
-void Renderer2D::DrawShape(ScreenBuffer& buffer, const Shape* shape, const Color& color, bool fill, const Color& fillColor, bool DrawBoundingBox) const
+void Renderer2D::DrawShape(const Shape* shape, const Color& color, bool fill, const Color& fillColor, bool DrawBoundingBox) const
 {
 	if(!shape)
 	{
@@ -51,17 +51,17 @@ void Renderer2D::DrawShape(ScreenBuffer& buffer, const Shape* shape, const Color
 	{
 		for (const auto& line : lines.value())
 		{
-			DrawLine(buffer, line, color);
+			DrawLine(line, color);
 		}
 
 		if (fill)
 		{
-			//TODO: implement filling algorithm for the shape
+			Fill(shape, fillColor);
 		}
 		if (DrawBoundingBox)
 		{
 			Rectangle2D box = shape->GetBoundingBox();
-			DrawShape(buffer, &box);
+			DrawShape(&box);
 		}
 	}
 	else 
@@ -70,7 +70,7 @@ void Renderer2D::DrawShape(ScreenBuffer& buffer, const Shape* shape, const Color
 	}
 }
 
-void Renderer2D::DrawShape(ScreenBuffer& buffer, const Circle2D& circle, float drawingAngle, const Color& color, bool fill, const Color& fillColor, bool drawBoundingBox) const
+void Renderer2D::DrawShape(const Circle2D& circle, float drawingAngle, const Color& color, bool fill, const Color& fillColor, bool drawBoundingBox) const
 {
 	if (drawingAngle <= 0.0f || drawingAngle >= 360.0f)
 	{
@@ -89,25 +89,25 @@ void Renderer2D::DrawShape(ScreenBuffer& buffer, const Circle2D& circle, float d
 		topEnd.RotateVector(drawingAngle, circle.GetCenter());
 		leftEnd.RotateVector(drawingAngle, circle.GetCenter());
 		bottomEnd.RotateVector(drawingAngle, circle.GetCenter());
-		DrawPoint(buffer, rightEnd, color);
-		DrawPoint(buffer, topEnd, color);
-		DrawPoint(buffer, leftEnd, color);
-		DrawPoint(buffer, bottomEnd, color);
+		DrawPoint(rightEnd, color);
+		DrawPoint(topEnd, color);
+		DrawPoint(leftEnd, color);
+		DrawPoint(bottomEnd, color);
 	}
 	if (fill)
 	{
-		//TODO
+		Fill(&circle, fillColor);
 	}
 	if (drawBoundingBox)
 	{
 		Rectangle2D  box = circle.GetBoundingBox();
-		DrawShape(buffer, &box);
+		DrawShape(&box);
 	}
 
 }
 
 
-void Renderer2D::Fill(ScreenBuffer& buffer, const Shape* shape, const Color& color)const
+void Renderer2D::Fill(const Shape* shape, const Color& color)const
 {
 	if (!shape)
 	{
@@ -126,7 +126,7 @@ void Renderer2D::Fill(ScreenBuffer& buffer, const Shape* shape, const Color& col
 			Vector2D currentPoint(x, y);
 			if (shape->ContainsPoint(currentPoint))
 			{
-				DrawPoint(buffer, currentPoint, color);
+				DrawPoint(currentPoint, color);
 			}
 		}
 	}
