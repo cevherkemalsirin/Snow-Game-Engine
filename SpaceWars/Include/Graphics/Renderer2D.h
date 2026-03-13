@@ -34,8 +34,10 @@ public:
 	  */
 	void DrawShape(const Shape* shape, const Color& color = Color::White(), bool fill = false, const Color& fillColor = Color::White(), bool DrawBoundingBox = false) const;
 
-	/*@param drawingAngle : max possible value : 360
-	 if drawing angle is 10 degree then there will be 36 points to draw the circle. If drawing angle is 1 degree then there will be 360 points to draw the circle. So smaller the drawing angle more smoother the circle will be but it will impact performance. Negative or extreme values will be treated as 360 degrees.*/
+	/*
+	* Mid point circle algorithm
+	https://www.youtube.com/watch?v=hpiILbMkF9w
+	*/
 
-	void DrawShape(const Circle2D& circle, float drawingAngle, const Color& color = Color::White(), bool fill = false, const Color& fillColor = Color::White(), bool drawBoundingBox = false) const;
+	void DrawShape(const Circle2D& circle, const Color& color = Color::White(), bool fill = false, const Color& fillColor = Color::White(), bool drawBoundingBox = false) const;
 };

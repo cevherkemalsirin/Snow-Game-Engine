@@ -36,10 +36,8 @@ Screen::Screen(int width, int height, std::string_view title) : m_width(width), 
 void Screen::Render()
 {
 	SDL_UpdateTexture(m_texture, nullptr, m_screenBuffer.GetBuffer(), m_width * static_cast<int>(sizeof(m_screenBuffer.GetBuffer()[0])));
-	ClearScreen();
 	SDL_RenderTexture(m_renderer, m_texture, nullptr, nullptr);
 	SDL_RenderPresent(m_renderer);
-
 }
 
 void Screen::ClearScreen(const Color& color) 

@@ -12,8 +12,8 @@ class Screen
 {
 private:
 	//customs
-	Renderer2D m_renderer2D;
 	ScreenBuffer m_screenBuffer;
+	Renderer2D m_renderer2D;
 	//SDL
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;

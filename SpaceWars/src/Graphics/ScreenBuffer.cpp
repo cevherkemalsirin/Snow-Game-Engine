@@ -2,7 +2,7 @@
 
 void ScreenBuffer::SetPixel(int x, int y, Color color)
 {
-	if (x < m_width && y < m_height)
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
 	{
 		m_buffer[y * m_width + x] = color.GetPixelColor();
 	}
@@ -10,7 +10,7 @@ void ScreenBuffer::SetPixel(int x, int y, Color color)
 
 Color ScreenBuffer::GetPixel(int x, int y) const
 {
-	if (x < m_width && y < m_height)
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
 	{
 		return Color(m_buffer[y * m_width + x]);
 	}

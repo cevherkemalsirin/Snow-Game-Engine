@@ -70,30 +70,36 @@ void Renderer2D::DrawShape(const Shape* shape, const Color& color, bool fill, co
 	}
 }
 
-void Renderer2D::DrawShape(const Circle2D& circle, float drawingAngle, const Color& color, bool fill, const Color& fillColor, bool drawBoundingBox) const
+void Renderer2D::DrawShape(const Circle2D& circle, const Color& color, bool fill, const Color& fillColor, bool drawBoundingBox) const
 {
-	if (drawingAngle <= 0.0f || drawingAngle >= 360.0f)
+	float x = 0;
+	float r = circle.GetRadius();
+	float y = r;
+	float cx = circle.GetCenter().GetX();
+	float cy = circle.GetCenter().GetY();
+	
+
+	while (x < y)
 	{
-		drawingAngle = 360.0f;
+		float midPoint = y - 0.5;
+		if (x * x + midPoint * midPoint > r * r)
+		{
+			--y;
+		}
+		
+		DrawPoint(Vector2D(cx + x,cy + y), color);
+		DrawPoint(Vector2D(cx - x, cy + y), color);
+		DrawPoint(Vector2D(cx + x, cy - y), color);
+		DrawPoint(Vector2D(cx - x, cy - y), color);
+		DrawPoint(Vector2D(cx + y, cy + x), color);
+		DrawPoint(Vector2D(cx - y, cy + x), color);
+		DrawPoint(Vector2D(cx + y, cy - x), color);
+		DrawPoint(Vector2D(cx - y, cy - x), color);
+
+		++x;
 	}
 
-	float fullDegree = 360.0f;
-	float quarterDegree = fullDegree / 4.0f;
-	Vector2D rightEnd(circle.GetCenter().GetX() + circle.GetRadius(), circle.GetCenter().GetY());
-	Vector2D topEnd(circle.GetCenter().GetX(), circle.GetCenter().GetY() - circle.GetRadius());
-	Vector2D leftEnd(circle.GetCenter().GetX() - circle.GetRadius(), circle.GetCenter().GetY());
-	Vector2D bottomEnd(circle.GetCenter().GetX(), circle.GetCenter().GetY() + circle.GetRadius());
-	for (float i = 0.0f; i < quarterDegree; i += drawingAngle / fullDegree)
-	{
-		rightEnd.RotateVector(drawingAngle, circle.GetCenter());
-		topEnd.RotateVector(drawingAngle, circle.GetCenter());
-		leftEnd.RotateVector(drawingAngle, circle.GetCenter());
-		bottomEnd.RotateVector(drawingAngle, circle.GetCenter());
-		DrawPoint(rightEnd, color);
-		DrawPoint(topEnd, color);
-		DrawPoint(leftEnd, color);
-		DrawPoint(bottomEnd, color);
-	}
+
 	if (fill)
 	{
 		Fill(&circle, fillColor);
