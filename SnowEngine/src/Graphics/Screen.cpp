@@ -1,5 +1,6 @@
 #include "Screen.h"
 #include <iostream>
+#include "Framework/Core.h"
 #include <SDL3/SDL.h>
 
 
@@ -7,7 +8,7 @@ Screen::Screen(int width, int height, std::string_view title) : m_width(width), 
 {
 	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
-		std::cout << "SDL failed to initialize\n";
+		snw::LOG("SDL failed to initialize");
 		throw std::runtime_error("SDL initialization failed");
 	}
 
@@ -15,14 +16,14 @@ Screen::Screen(int width, int height, std::string_view title) : m_width(width), 
 	
 	if (m_window == nullptr)
 	{
-		std::cout << "Window creation failed\n";
+		snw::LOG("Window creation failed");
 		throw std::runtime_error("Window creation failed");
 	}
 
 	m_renderer = SDL_CreateRenderer(m_window,NULL);
 	if (m_renderer == nullptr)
 	{
-		std::cout << "Renderer creation failed\n";
+		snw::LOG("Renderer creation failed");
 		throw std::runtime_error("Renderer creation failed");
 	}
 	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, m_width, m_height);

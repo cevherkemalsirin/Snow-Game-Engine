@@ -4,6 +4,7 @@
 #include "Shapes/Circle2D.h"
 #include <SDL3/SDL.h>
 #include <iostream>
+#include "Framework/Core.h"
 
 namespace snw
 {
@@ -28,7 +29,7 @@ namespace snw
 				switch (event.type)
 				{
 				case SDL_EVENT_KEY_DOWN:
-						std::cout << "Key down: " << event.key.key << std::endl;
+					snw::LOG("Key Down: {}", event.key.key);
 						break;
 				case SDL_EVENT_QUIT:
 					m_running = false;
@@ -56,7 +57,7 @@ namespace snw
 
 	void Application::Tick(float dt)
 	{
-		std::cout << "FPS is : " << 1.0f / dt << " \n";
+		//snw::LOG("Fps is: {}", std::round(1.0f / dt));
 	}
 
 	void Application::Render()
