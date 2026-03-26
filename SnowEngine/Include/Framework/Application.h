@@ -1,17 +1,17 @@
 #pragma once
 #include "Screen.h"
 
-namespace sw
+namespace snw
 {
 	class Application
 	{
 		public:
+			Application():Application(800,600,"SnowEngineGame") {}
 			Application(int width, int height, std::string_view appName);
 			inline int Width()const { return m_width; }
 			inline int Height()const { return m_height; }
 			void Run();
-			void Tick(float dt);
-			void Render();
+
 			
 		private:
 			int m_width;
@@ -21,5 +21,11 @@ namespace sw
 			const float m_targetFps;
 			float m_fixedDt;
 
+			virtual void Tick(float dt);
+			virtual void Render();
+
+			void TickInternal(float dt);
+			void RenderInternal();
+			
 	};
 }

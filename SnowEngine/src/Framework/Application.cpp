@@ -5,7 +5,7 @@
 #include <SDL3/SDL.h>
 #include <iostream>
 
-namespace sw
+namespace snw
 {
 	Application::Application(int width, int height, std::string_view appName) : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps), m_screen(width, height, appName),m_width(width),m_height(height)
 	{
@@ -46,9 +46,9 @@ namespace sw
 			while (accumulatedTime >= m_fixedDt)
 			{
 				accumulatedTime -= m_fixedDt;
-				Tick(m_fixedDt);
+				TickInternal(m_fixedDt);
 			}
-			Render();
+			RenderInternal();
 
 		}
 	}
@@ -61,13 +61,27 @@ namespace sw
 
 	void Application::Render()
 	{
-		m_screen.ClearScreen();
+		
 		Rectangle2D rect(Vector2D(0.f, 0.f), 50, 60);
 		Circle2D circ(Vector2D(m_width / 2.f, m_height / 2.f), 100.f);
 		Triangle2D trig(Vector2D(200.f, 1.f), Vector2D(100.f, 100.f), Vector2D(300.f, 100.f));
 		m_screen.ShapeRenderer().DrawShape(&rect, Color::Green(), true);
 		m_screen.ShapeRenderer().DrawShape(circ, Color::Red());
 		m_screen.ShapeRenderer().DrawShape(&trig, Color::Orange(),true,Color::Orange(),true);
+		
+	}
+
+	void Application::TickInternal(float dt)
+	{
+		Tick(dt);
+	}
+
+	void Application::RenderInternal()
+	{
+		m_screen.ClearScreen();
+		
+		Render();
+
 		m_screen.Render();
 	}
 }

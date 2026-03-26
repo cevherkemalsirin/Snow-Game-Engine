@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 #making variable
 set(SPACEWARS_GAME_NAME SpaceWars)
+set(SNOW_GAME_ENGINE SnowEngine)
 set(SDL_LIB_NAME SDL3)
 
 
@@ -22,5 +23,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(${SDL_LIB_NAME})
 
 #check other cmake
+add_subdirectory(SnowEngine)
 add_subdirectory(SpaceWars)
 
