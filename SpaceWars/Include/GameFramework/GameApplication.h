@@ -5,6 +5,7 @@ namespace sw
 {
 	class GameApplication : public snw::Application
 	{
-
+	public:
+		GameApplication();
 	};
 }

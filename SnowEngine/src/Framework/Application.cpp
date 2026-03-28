@@ -3,14 +3,17 @@
 #include "Shapes/Triangle.h"
 #include "Shapes/Circle2D.h"
 #include <SDL3/SDL.h>
-#include <iostream>
+#include  "Framework/World.h"
 #include "Framework/Core.h"
 
 namespace snw
 {
 	Application::Application(int width, int height, std::string_view appName) : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps), m_screen(width, height, appName),m_width(width),m_height(height)
 	{
-		
+		if (currentWorld)
+		{
+			currentWorld->BeginPlayInternal();
+		}
 	}
 
 	void Application::Run()
@@ -57,7 +60,7 @@ namespace snw
 
 	void Application::Tick(float dt)
 	{
-		//snw::LOG("Fps is: {}", std::round(1.0f / dt));
+
 	}
 
 	void Application::Render()
@@ -75,6 +78,10 @@ namespace snw
 	void Application::TickInternal(float dt)
 	{
 		Tick(dt);
+		if (currentWorld)
+		{
+			currentWorld->TickInternal(dt);
+		}
 	}
 
 	void Application::RenderInternal()

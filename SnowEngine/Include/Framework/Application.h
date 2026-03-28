@@ -1,8 +1,10 @@
 #pragma once
 #include "Screen.h"
+#include "Core.h"
 
 namespace snw
 {
+	class World;
 	class Application
 	{
 		public:
@@ -11,7 +13,14 @@ namespace snw
 			inline int Width()const { return m_width; }
 			inline int Height()const { return m_height; }
 			void Run();
-
+			
+			template <class worldType>
+			weak<worldType> LoadWorld()
+			{
+				shared<worldType> newWorld = std::make_shared<worldType>(this);
+				currentWorld = newWorld;
+				return newWorld;
+			}
 			
 		private:
 			int m_width;
@@ -20,6 +29,7 @@ namespace snw
 			bool m_running;
 			const float m_targetFps;
 			float m_fixedDt;
+			shared<World> currentWorld;
 
 			virtual void Tick(float dt);
 			virtual void Render();
