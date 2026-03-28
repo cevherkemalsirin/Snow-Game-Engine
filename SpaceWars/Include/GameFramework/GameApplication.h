@@ -1,9 +1,9 @@
 #pragma once
 #include <Framework/Application.h>
 
-namespace sw
+namespace snw
 {
-	class GameApplication : public snw::Application
+	class GameApplication : public Application
 	{
 	public:
 		GameApplication();

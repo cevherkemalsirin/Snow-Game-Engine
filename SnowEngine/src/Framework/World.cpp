@@ -1,16 +1,21 @@
+
 #include "Framework/World.h"
-#include "Framework/Core.h"
+#include "Framework/Actor.h"
 
 namespace snw
 {
+	World::World(Application* owningApplication) :m_owningApplication(owningApplication), m_beganPlay(false), m_Actors{}, m_PendingActors{}
+	{
+
+	}
 	void World::BeginPlay()
 	{
-		LOG("began play");
+		LOG("World BeginPlay is called");
 	}
 
 	void World::Tick(float deltaTime)
 	{
-		LOG("Ticking at: {}", 1/deltaTime);
+
 	}
 
 	void World::BeginPlayInternal()
@@ -24,6 +29,18 @@ namespace snw
 
 	void World::TickInternal(float deltaTime)
 	{
+		for (auto actor : m_PendingActors)
+		{
+			m_Actors.push_back(actor);
+			actor->BeginPlayInternal();
+		}
+		m_PendingActors.clear();
+
+		for (auto actor : m_Actors)
+		{
+			actor->Tick(deltaTime);
+		}
+
 		Tick(deltaTime);
 	}
 

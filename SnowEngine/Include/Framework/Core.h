@@ -1,6 +1,7 @@
 #pragma once
 #include <print>
 #include <memory>
+#include <vector>
 
 
 namespace snw
@@ -13,6 +14,9 @@ namespace snw
 
 	template <class T>
 	using weak = std::weak_ptr<T>;
+
+	template <class T>
+	using List = std::vector<T>;
 
 	template<class ...args>
 	inline void LOG(std::format_string<args...> message, args&&... values)

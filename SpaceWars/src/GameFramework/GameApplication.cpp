@@ -1,18 +1,20 @@
 #include "GameFramework/GameApplication.h"
 #include "Framework/World.h"
+#include "Framework/Actor.h"
 
 snw::Application* GetApplication()
 {
-	return new sw::GameApplication{};
+	return new snw::GameApplication{};
 }
 
-namespace sw
+namespace snw
 {
 
 
 	GameApplication::GameApplication()
 	{
-		LoadWorld<snw::World>();
+		 weak<World> world = LoadWorld<World>();
+		 world.lock()->SpawnActor<Actor>();
 	}
 
 }
