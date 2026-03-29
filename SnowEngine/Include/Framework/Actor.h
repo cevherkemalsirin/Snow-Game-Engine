@@ -1,10 +1,11 @@
 #pragma once
+#include "Framework/Object.h"
 
 
 namespace snw
 {
 	class World;
-	class Actor
+	class Actor : public Object
 	{
 	private:
 		World* m_owningWorld;

@@ -36,9 +36,17 @@ namespace snw
 		}
 		m_PendingActors.clear();
 
-		for (auto actor : m_Actors)
+		for (auto it = m_Actors.begin(); it != m_Actors.end();)
 		{
-			actor->Tick(deltaTime);
+			if ((*it)->IsPendingDestroy())
+			{
+				it = m_Actors.erase(it);
+			}
+			else
+			{
+				(*it)->Tick(deltaTime);
+				++it;
+			}
 		}
 
 		Tick(deltaTime);

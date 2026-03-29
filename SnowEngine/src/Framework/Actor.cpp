@@ -28,7 +28,7 @@ namespace snw
 
 	Actor::~Actor()
 	{
-
+		LOG("Actor Destroyed");
 
 	}
 
