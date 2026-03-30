@@ -34,7 +34,7 @@ public:
 	bool isInOpenList{ false };
 	bool isInClosedList{ false };
 
-	inline Node(int x, int y, const Rectangle2D& rect) :gridLocation{ x, y }, type{ NodeType::Empty }, cellRectangle{ rect } {}
+	inline Node(int row, int col, const Rectangle2D& rect) :gridLocation{ row, col }, type{ NodeType::Empty }, cellRectangle{ rect } {}
 
 	inline int gCost() const { return costFromStart; }
 	inline int hCost() const { return estimatedCostToEnd; }
