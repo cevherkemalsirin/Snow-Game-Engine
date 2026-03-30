@@ -5,6 +5,7 @@
 #include "Shapes/Shape.h"
 #include "Shapes/Circle2D.h"
 #include "Shapes/Rectangle2D.h"
+#include "AI/AStar/Grid.h"
 
 
 void Renderer2D::DrawPoint( int x, int y, Color color) const
@@ -113,6 +114,7 @@ void Renderer2D::DrawShape(const Circle2D& circle, const Color& color, bool fill
 }
 
 
+
 void Renderer2D::Fill(const Shape* shape, const Color& color)const
 {
 	if (!shape)
@@ -137,4 +139,41 @@ void Renderer2D::Fill(const Shape* shape, const Color& color)const
 		}
 	}
 	
+}
+
+void Renderer2D::DrawGrid(const Grid& grid) const
+{
+	for (const auto& node : grid.GetNodes())
+	{
+		Color fillColor;
+		Color borderColor = Color::Black();
+		switch (node.type)
+		{
+		case NodeType::Empty:
+			fillColor = Color::White();
+			break;
+		case NodeType::Wall:
+			fillColor = Color::Black();
+			break;
+		case NodeType::Start:
+			fillColor = Color::Green();
+			break;
+		case NodeType::End:
+			fillColor = Color::Orange();
+			break;
+		case NodeType::Open:
+			fillColor = Color::Blue();
+			break;
+		case NodeType::Closed:
+			fillColor = Color::Red();
+			break;
+		case NodeType::Path:
+			fillColor = Color::Yellow();
+			break;
+		default:
+			fillColor = Color::White();
+			break;
+		}
+		DrawShape(&node.cellRectangle, borderColor, true, fillColor);
+	}
 }

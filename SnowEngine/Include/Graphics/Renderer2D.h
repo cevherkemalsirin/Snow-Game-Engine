@@ -8,6 +8,7 @@ class Line2D;
 class Circle2D;
 class Shape;
 class Vector2D;
+class Grid;
 
 class Renderer2D
 {
@@ -40,4 +41,9 @@ public:
 	*/
 
 	void DrawShape(const Circle2D& circle, const Color& color = Color::White(), bool fill = false, const Color& fillColor = Color::White(), bool drawBoundingBox = false) const;
+
+	/*
+	* Draw Grid for A* pathfinding algorithm
+	*/
+	void DrawGrid(const Grid& grid) const;
 };
