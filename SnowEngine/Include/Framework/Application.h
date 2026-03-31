@@ -21,11 +21,12 @@ namespace snw
 				currentWorld = newWorld;
 				return newWorld;
 			}
-			
-		private:
+
+	 protected:
+			Screen m_screen;
 			int m_width;
 			int m_height;
-			Screen m_screen;
+		private:
 			bool m_running;
 			const float m_targetFps;
 			float m_fixedDt;

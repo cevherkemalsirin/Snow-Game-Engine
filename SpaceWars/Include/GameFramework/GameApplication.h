@@ -10,6 +10,7 @@ namespace snw
 		GameApplication();
 
 		virtual void Tick(float dt) override;
+		virtual void Render() override;
 		weak<Actor> actor;
 	};
 }

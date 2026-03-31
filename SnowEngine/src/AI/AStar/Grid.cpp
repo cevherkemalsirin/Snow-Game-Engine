@@ -4,6 +4,8 @@
 Grid::Grid(int cols, int rows, float cellWidth, float cellHeight)
 	:m_cols(cols), m_rows(rows), m_cellWidth(cellWidth), m_cellHeight(cellHeight)
 {
+	m_startNodeIndex = { -1, -1 };
+	m_endNodeIndex = { -1,-1 };
 	BuildGrid();
 }
 
@@ -13,7 +15,7 @@ int Grid::GetNodeLinearIndex(int row, int column) const
 }
 
 
-bool Grid::isValidIndex(GridIndex index) const
+ bool Grid::isValidIndex(const GridIndex& index) const
 {
 	int row = index.row;
 	int col = index.col;
@@ -26,7 +28,11 @@ bool Grid::isValidIndex(GridIndex index) const
 
 Node& Grid::GetNode(int row, int col)
 {
-	return  GetNode(row, col);
+	if (!isValidIndex({ row, col }))
+	{
+		throw std::out_of_range("Invalid grid index");
+	}
+	return m_grid[GetNodeLinearIndex(row, col)];
 }
 
 const Node& Grid::GetNode(int row, int col) const
@@ -44,10 +50,14 @@ void Grid::SetStartNode(int row, int col)
 	{
 		throw std::out_of_range("Invalid grid index");
 	}
-	Node& previousStartNode = GetNode(m_startNodeIndex.row, m_startNodeIndex.col);
-	if (previousStartNode.isWalkable())
+
+	if (isValidIndex(GridIndex(m_endNodeIndex.row, m_endNodeIndex.col)))
 	{
-		previousStartNode.type = NodeType::Empty;
+		Node& previousStartNode = GetNode(m_startNodeIndex.row, m_startNodeIndex.col);
+		if (previousStartNode.isWalkable())
+		{
+			previousStartNode.type = NodeType::Empty;
+		}
 	}
 
 	Node& node = GetNode(row, col);
@@ -62,13 +72,18 @@ void Grid::setEndNode(int row, int col)
 	{
 		throw std::out_of_range("Invalid grid index");
 	}
-	Node& prevEndNode = GetNode(m_endNodeIndex.row, m_endNodeIndex.col);
+
 	Node& node = GetNode(row, col);
-	if (prevEndNode.isWalkable())
+	//if there is already an end node then we need to reset it
+	if (isValidIndex(GridIndex(m_endNodeIndex.row, m_endNodeIndex.col)))
 	{
-		prevEndNode.type = NodeType::Empty;
-		node.parentLocation = prevEndNode.parentLocation;
-		prevEndNode.parentLocation = { -1, -1 };
+		Node& prevEndNode = GetNode(m_endNodeIndex.row, m_endNodeIndex.col);
+		if (prevEndNode.isWalkable())
+		{
+			prevEndNode.type = NodeType::Empty;
+			node.parentLocation = prevEndNode.parentLocation;
+			prevEndNode.parentLocation = { -1, -1 };
+		}
 	}
 
 	node.type = NodeType::End;
@@ -115,8 +130,6 @@ void Grid::ResetGridData()
 	{
 		node.SetgCost(0);
 		node.SethCost(0);
-		node.isInOpenList = false;
-		node.isInClosedList = false;
 		node.parentLocation = { -1, -1 };
 		if (node.type == NodeType::Open || node.type == NodeType::Closed || node.type == NodeType::Path)
 		{

@@ -1,7 +1,4 @@
 #include "Framework/Application.h"
-#include "Shapes/Rectangle2D.h"
-#include "Shapes/Triangle.h"
-#include "Shapes/Circle2D.h"
 #include <SDL3/SDL.h>
 #include  "Framework/World.h"
 #include "Framework/Core.h"
@@ -65,13 +62,6 @@ namespace snw
 
 	void Application::Render()
 	{
-		
-		Rectangle2D rect(Vector2D(0.f, 0.f), 50, 60);
-		Circle2D circ(Vector2D(m_width / 2.f, m_height / 2.f), 100.f);
-		Triangle2D trig(Vector2D(200.f, 1.f), Vector2D(100.f, 100.f), Vector2D(300.f, 100.f));
-		m_screen.ShapeRenderer().DrawShape(&rect, Color::Green(), true);
-		m_screen.ShapeRenderer().DrawShape(circ, Color::Red());
-		m_screen.ShapeRenderer().DrawShape(&trig, Color::Orange(),true,Color::Orange(),true);
 		
 	}
 
