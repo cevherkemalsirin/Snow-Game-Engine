@@ -21,6 +21,19 @@ struct GridIndex
 	{
 		return row == other.row && col == other.col;
 	}
+
+
+  inline bool operator!=(const GridIndex& other) const
+	{
+		return !(*this == other);
+	}
+
+	inline bool operator<(const GridIndex& other) const
+	{
+		if (row != other.row)
+			return row < other.row;
+		return col < other.col;
+	}
 };
 
 

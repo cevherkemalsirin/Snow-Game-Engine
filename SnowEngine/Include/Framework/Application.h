@@ -23,6 +23,7 @@ namespace snw
 			}
 
 	 protected:
+		 bool isAStarSolved{ false };
 			Screen m_screen;
 			int m_width;
 			int m_height;

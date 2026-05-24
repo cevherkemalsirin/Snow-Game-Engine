@@ -3,49 +3,54 @@
 
 bool AStarSolver::Solve(Grid& grid)
 {
-	snw::List<Node> openList;
-	std::set<Node> closedList;
+	snw::List<GridIndex> openList;
+	std::set<GridIndex> closedList;
 
 	 Node& startNode = grid.GetStartNode();
 	startNode.SethCost(CalculateHeuristic(startNode, grid.GetEndNode()));
 	startNode.SetgCost(0);
-	openList.push_back(startNode);
+	startNode.parentLocation = { -1, -1 };
+	openList.push_back(startNode.gridLocation);
 
 	while (!openList.empty())
 	{
-		Node& currentNode = GetLowestFCostNode(grid, openList);
-	
-		if (currentNode == grid.GetEndNode())
+		GridIndex currentIndex = GetLowestFCostNode(grid, openList);
+		Node& currentNode = grid.GetNode(currentIndex);
+
+		if (currentIndex == grid.GetEndNodeIndex())
 		{
 			ReconstructPath(grid);
 			return true;
 		}
-		RemoveFromOpenList(openList, currentNode);
-		closedList.insert(currentNode);
+		RemoveFromOpenList(openList, currentIndex);
+		closedList.insert(currentIndex);
 		if (currentNode.type != NodeType::Start &&
 			currentNode.type != NodeType::End)
 		{
 			currentNode.type = NodeType::Closed;
 		}
 
-		snw::List<NeighborData> neighbors = GetNeighbors(grid, currentNode.gridLocation);
+		snw::List<NeighborData> neighbors = GetNeighbors(grid,currentIndex);
 
 		for (const NeighborData& neighbor : neighbors)
 		{
 			Node& neighborNode = grid.GetNode(neighbor.index);
-			if (!neighborNode.isWalkable() || closedList.find(neighborNode) != closedList.end())
+			if (!neighborNode.isWalkable() || closedList.find(neighbor.index) != closedList.end())
 			{
 				continue;
 			}
 			const int totalCostFromStart = currentNode.gCost() + neighbor.moveCost;
-			if (std::find(openList.begin(), openList.end(), neighborNode) == openList.end() || totalCostFromStart < neighborNode.gCost())
+
+			if (std::find(openList.begin(), openList.end(), neighbor.index) == openList.end() || totalCostFromStart < neighborNode.gCost())
 			{
-				neighborNode.parentLocation = currentNode.gridLocation;
+				neighborNode.parentLocation = currentIndex;
 				neighborNode.SetgCost(totalCostFromStart);
 				neighborNode.SethCost(CalculateHeuristic(neighborNode, grid.GetEndNode()));
-				if (std::find(openList.begin(), openList.end(), neighborNode) == openList.end())
+
+				if (std::find(openList.begin(), openList.end(), neighbor.index) == openList.end())
 				{
-					openList.push_back(neighborNode);
+					openList.push_back(neighbor.index);
+
 					if (neighborNode.type != NodeType::Start &&
 						neighborNode.type != NodeType::End)
 					{
@@ -113,26 +118,34 @@ snw::List<NeighborData> AStarSolver::GetNeighbors(const Grid& grid, const GridIn
 	return neighbors;
 }
 
-Node& AStarSolver::GetLowestFCostNode(const Grid& grid, snw::List<Node>& openList) 
+GridIndex AStarSolver::GetLowestFCostNode(const Grid& grid, snw::List<GridIndex>& openList)
 {
-	Node& lowestFCostNode = openList[0];
-	for (auto& node : openList)
+	GridIndex bestIndex = openList[0];
+	const Node& bestNodeInitial = grid.GetNode(bestIndex);
+	int bestFCost = bestNodeInitial.fCost();
+	int bestHCost = bestNodeInitial.hCost();
+
+
+	for (size_t i = 1; i < openList.size(); ++i)
 	{
-		if(node.fCost() < lowestFCostNode.fCost())
+		const GridIndex& currentIndex = openList[i];
+		const Node& currentNode = grid.GetNode(currentIndex);
+
+		if (currentNode.fCost() < bestFCost ||
+			(currentNode.fCost() == bestFCost && currentNode.hCost() < bestHCost))
 		{
-			lowestFCostNode = node;
-		}
-		else if (node.fCost() == lowestFCostNode.fCost() && node.hCost() < lowestFCostNode.hCost())
-		{
-			lowestFCostNode = node;
+			bestIndex = currentIndex;
+			bestFCost = currentNode.fCost();
+			bestHCost = currentNode.hCost();
 		}
 	}
-	return lowestFCostNode;
+
+	return bestIndex;
 }
 
-bool AStarSolver::RemoveFromOpenList(snw::List<Node>& openList, const Node& node)
+bool AStarSolver::RemoveFromOpenList(snw::List<GridIndex>& openList, const GridIndex& index)
 {
-	auto it = std::find(openList.begin(), openList.end(), node);
+	auto it = std::find(openList.begin(), openList.end(), index);
 	if (it != openList.end())
 	{
 		openList.erase(it);
@@ -148,7 +161,7 @@ void AStarSolver::ReconstructPath(Grid& grid)
 
 	while (currentIndex != startIndex)
 	{
-		Node& currentNode = grid.GetNode(currentIndex.row, currentIndex.col);
+		Node& currentNode = grid.GetNode(currentIndex);
 
 		if (currentNode.type != NodeType::Start &&
 			currentNode.type != NodeType::End)
@@ -162,5 +175,5 @@ void AStarSolver::ReconstructPath(Grid& grid)
 		}
 
 		currentIndex = currentNode.parentLocation;
-		}
+	}
 }

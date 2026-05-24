@@ -30,6 +30,10 @@ namespace snw
 				{
 				case SDL_EVENT_KEY_DOWN:
 					snw::LOG("Key Down: {}", event.key.key);
+					if (event.key.key == SDLK_S)
+					{
+						isAStarSolved = true;
+					}
 						break;
 				case SDL_EVENT_QUIT:
 					m_running = false;

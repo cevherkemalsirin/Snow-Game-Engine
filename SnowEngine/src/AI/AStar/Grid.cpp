@@ -1,5 +1,5 @@
 #include "AI/AStar/Grid.h"
-
+#include <limits>
 
 Grid::Grid(int cols, int rows, float cellWidth, float cellHeight)
 	:m_cols(cols), m_rows(rows), m_cellWidth(cellWidth), m_cellHeight(cellHeight)
@@ -129,7 +129,7 @@ void Grid::ResetGridData()
 	for (auto& node : m_grid)
 	{
 		node.SetgCost(0);
-		node.SethCost(0);
+		node.SethCost(std::numeric_limits<int>::max());
 		node.parentLocation = { -1, -1 };
 		if (node.type == NodeType::Open || node.type == NodeType::Closed || node.type == NodeType::Path)
 		{
