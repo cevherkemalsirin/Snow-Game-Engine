@@ -17,6 +17,22 @@ void ArcadeScene::Init()
 		}
 		};
 	m_gameController.AddInputActionForKey(action);
+
+
+	MouseButtonAction mouseAction;
+	mouseAction.mouseButton = GameController::LeftMouseButton();
+	mouseAction.mouseInputAction = [](InputState state, const MousePosition& pos) {
+			if (GameController::IsPressed(state))
+			{
+				snw::LOG("Left mouse Button is pressed! at coordinants: x:{}, y:{}",pos.xPos,pos.yPos);
+			}
+		};
+
+	m_gameController.AddMouseButtonAction(mouseAction);
+
+	m_gameController.SetMouseMovedAction([](const MousePosition& mousePosition){
+		snw::LOG("Mouse Moving at coordinants: x:{}, y:{}",mousePosition.xPos,mousePosition.yPos);
+		});
 }
 
 void ArcadeScene::Tick(float dt)

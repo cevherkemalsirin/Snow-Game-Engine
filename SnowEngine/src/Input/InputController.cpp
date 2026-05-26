@@ -28,6 +28,30 @@ void InputController::Tick(float deltaTime)
 					action(deltaTime, state);
 				}
 				break;
+			case SDL_EVENT_MOUSE_MOTION:
+				if (m_currentController)
+				{
+					if (MouseMovedAction mouseMoved = m_currentController->GetMouseMovedAction())
+					{
+						MousePosition position;
+						position.xPos = event.motion.x;
+						position.yPos = event.motion.y;
+						mouseMoved(position);
+					}
+				}
+				break;
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
+			case SDL_EVENT_MOUSE_BUTTON_UP:
+				if (m_currentController)
+				{
+					MouseInputAction action = m_currentController->GetMouseButtonAction(static_cast<MouseButton>(event.button.button));
+					MousePosition position;
+					position.xPos = event.button.x;
+					position.yPos = event.button.y;
+					InputState state = event.button.down ? InputState::Pressed : InputState::Released;
+					action(state,position);
+				}
+				break;
 			case SDL_EVENT_QUIT:
 				m_quitAction(deltaTime, InputState::Pressed);
 				break;

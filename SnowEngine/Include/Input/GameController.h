@@ -21,7 +21,20 @@ public:
 	static InputKey UpKey();
 	static InputKey DownKey();
 
+	inline const MouseMovedAction& GetMouseMovedAction() { return m_mouseMovedAction; }
+
+	inline void SetMouseMovedAction(const MouseMovedAction& action) { m_mouseMovedAction = action; }
+
+	MouseInputAction GetMouseButtonAction(MouseButton button);
+
+	void AddMouseButtonAction(const MouseButtonAction& mouseButtonAction);
+
+	static MouseButton LeftMouseButton();
+	static MouseButton RightMouseButton();
+
 
  private:
 	std::vector<ButtonAction> m_buttonActions;
+	std::vector<MouseButtonAction> m_moouseButtonActions;
+	MouseMovedAction m_mouseMovedAction;
 };
