@@ -43,9 +43,10 @@ namespace snw
 	{
 		if (!scene) return;
 		scene->Init();
+		m_inputController.SetGameController(scene->GetGameController());
 		m_sceneStack.emplace_back(std::move(scene));
 		m_screen.UpdateScreenTitle(TopScene()->GetSceneName());
-		m_inputController.SetGameController(scene->GetGameController());
+		
 	}
 
 	void GameApplication::PopScene()

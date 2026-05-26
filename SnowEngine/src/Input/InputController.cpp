@@ -23,7 +23,9 @@ void InputController::Tick(float deltaTime)
 				{
 					InputAction action = m_currentController->GetActionForKey(event.key.key);
 					std::cout << event.key.key << std::endl;
-					action(deltaTime, static_cast<InputState>(event.key.type));
+					InputState state = event.key.down ? InputState::Pressed : InputState::Released;
+
+					action(deltaTime, state);
 				}
 				break;
 			case SDL_EVENT_QUIT:
