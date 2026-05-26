@@ -1,6 +1,7 @@
 #pragma once
 #include "Screen.h"
 #include "Core.h"
+#include  "Input/InputController.h"
 
 namespace snw
 {
@@ -22,11 +23,13 @@ namespace snw
 				return newWorld;
 			}
 
-	 protected:
+		protected:
 		 bool isAStarSolved{ false };
 			Screen m_screen;
 			int m_width;
 			int m_height;
+			InputController m_inputController;
+
 		private:
 			bool m_running;
 			const float m_targetFps;

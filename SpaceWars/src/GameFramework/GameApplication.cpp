@@ -26,7 +26,7 @@ namespace snw
 	{
 		if (TopScene())
 		{
-			TopScene()->Update(dt);
+			TopScene()->Tick(dt);
 		}
 		
 	}
@@ -45,6 +45,7 @@ namespace snw
 		scene->Init();
 		m_sceneStack.emplace_back(std::move(scene));
 		m_screen.UpdateScreenTitle(TopScene()->GetSceneName());
+		m_inputController.SetGameController(scene->GetGameController());
 	}
 
 	void GameApplication::PopScene()
@@ -56,6 +57,7 @@ namespace snw
 		if (TopScene())
 		{
 			m_screen.UpdateScreenTitle(TopScene()->GetSceneName());
+			m_inputController.SetGameController(TopScene()->GetGameController());
 		}
 	}
 

@@ -5,8 +5,9 @@
 
 namespace snw
 {
-	Application::Application(int width, int height, std::string_view appName) : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps), m_screen(width, height, appName),m_width(width),m_height(height)
+	Application::Application(int width, int height, std::string_view appName) : m_running(true), m_targetFps(60.0f), m_fixedDt(1.0f / m_targetFps), m_screen(width, height, appName), m_width(width), m_height(height), m_inputController([this](float dt, InputState) { m_running = false;})
 	{
+	
 		if (currentWorld)
 		{
 			currentWorld->BeginPlayInternal();
@@ -14,35 +15,14 @@ namespace snw
 	}
 
 	void Application::Run()
-	{	
+	{
 		float accumulatedTime = 0.0f;
 		double frec = static_cast<double>(SDL_GetPerformanceFrequency());
 
-
-		Uint64 lastCounter = SDL_GetPerformanceCounter();
-
-		SDL_Event event;
 		while (m_running)
 		{
-			while (SDL_PollEvent(&event))
-			{
-				switch (event.type)
-				{
-				case SDL_EVENT_KEY_DOWN:
-					snw::LOG("Key Down: {}", event.key.key);
-					if (event.key.key == SDLK_S)
-					{
-						isAStarSolved = true;
-					}
-						break;
-				case SDL_EVENT_QUIT:
-					m_running = false;
-					break;
-				default:
-					break;
-				}
-			}
-
+			Uint64 lastCounter = SDL_GetPerformanceCounter();
+			m_inputController.Tick(m_fixedDt);//takes input
 			Uint64 currentCounter = SDL_GetPerformanceCounter();
 			double frameTime = (currentCounter - lastCounter) / frec;
 			accumulatedTime += static_cast<float>(frameTime);
@@ -54,9 +34,9 @@ namespace snw
 				TickInternal(m_fixedDt);
 			}
 			RenderInternal();
-
 		}
 	}
+
 
 	
 

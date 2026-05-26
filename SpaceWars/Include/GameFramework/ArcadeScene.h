@@ -19,7 +19,7 @@ public:
 	ArcadeScene() {};
 
 	virtual void Init() override;
-	virtual void Update(float dt) override;
+	virtual void Tick(float dt) override;
 	virtual void Render(Screen& screen) override;
 	virtual const std::string& GetSceneName() const override;
 

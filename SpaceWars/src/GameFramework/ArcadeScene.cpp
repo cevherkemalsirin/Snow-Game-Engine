@@ -3,14 +3,23 @@
 #include "Shapes/Rectangle2D.h"
 #include "Shapes/Triangle.h"
 #include "Shapes/Circle2D.h"
-
+#include "Input/GameController.h"
+#include "Framework/Core.h"
 
 void ArcadeScene::Init()
 {
-
+	ButtonAction action;
+	action.key = GameController::ActionKey();
+	action.action = [](float dt, InputState state) {
+		if (GameController::IsPressed(state))
+		{
+			snw::LOG("Action Button is pressed!");
+		}
+		};
+	m_gameController.AddInputActionForKey(action);
 }
 
-void ArcadeScene::Update(float dt)
+void ArcadeScene::Tick(float dt)
 {
 
 }
