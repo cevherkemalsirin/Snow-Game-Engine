@@ -4,6 +4,7 @@
 #include "GameFrameWork/ArcadeScene.h"
 
 
+
 snw::Application* GetApplication()
 {
 	return new snw::GameApplication{};
@@ -17,19 +18,54 @@ namespace snw
 	GameApplication::GameApplication()
 	{
 		 weak<World> world = LoadWorld<World>();
-		 arcadeScene = std::make_unique<ArcadeScene>();
+		 m_arcadeScene = std::make_unique<ArcadeScene>();
+		 PushScene(std::move(m_arcadeScene));
 	}
 
 	void GameApplication::Tick(float dt)
 	{
-		arcadeScene->Update(dt);
+		if (TopScene())
+		{
+			TopScene()->Update(dt);
+		}
+		
 	}
 
 	void GameApplication::Render()
 	{
-		
-		arcadeScene->Render(m_screen);
+		if (TopScene())
+		{
+			TopScene()->Render(m_screen);
+		}
+	}
 
+	void GameApplication::PushScene(unique<Scene> scene)
+	{
+		if (!scene) return;
+		scene->Init();
+		m_sceneStack.emplace_back(std::move(scene));
+		m_screen.UpdateScreenTitle(TopScene()->GetSceneName());
+	}
+
+	void GameApplication::PopScene()
+	{
+		if (m_sceneStack.size() > 1)
+		{
+			m_sceneStack.pop_back();
+		}
+		if (TopScene())
+		{
+			m_screen.UpdateScreenTitle(TopScene()->GetSceneName());
+		}
+	}
+
+	Scene* GameApplication::TopScene()
+	{
+		if (m_sceneStack.empty())
+		{
+			return nullptr;
+		}
+		return m_sceneStack.back().get();
 	}
 
 }

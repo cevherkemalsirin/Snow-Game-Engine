@@ -16,7 +16,7 @@ enum class arcadeGame {
 class ArcadeScene : public Scene
 {
 public:
-	ArcadeScene();
+	ArcadeScene() {};
 
 	virtual void Init() override;
 	virtual void Update(float dt) override;

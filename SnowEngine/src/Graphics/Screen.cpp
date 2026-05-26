@@ -48,6 +48,11 @@ void Screen::ClearScreen(const Color& color)
 	SDL_RenderClear(m_renderer);
 }
 
+void Screen::UpdateScreenTitle(std::string_view title)
+{
+	SDL_SetWindowTitle(m_window, title.data());
+}
+
 Screen::~Screen()
 {
 	SDL_DestroyRenderer(m_renderer);

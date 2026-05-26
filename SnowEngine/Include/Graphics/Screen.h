@@ -29,6 +29,7 @@ public:
 
 	void Render();
 	void ClearScreen(const Color& color = Color::Black());
+	void UpdateScreenTitle(std::string_view title);
 	int GetWidth() const { return m_width; }
 	int GetHeight() const { return m_height; }
 	const Renderer2D& ShapeRenderer() const { return m_renderer2D; }

@@ -13,7 +13,7 @@ namespace snw
 			inline int Width()const { return m_width; }
 			inline int Height()const { return m_height; }
 			void Run();
-			
+
 			template <class worldType>
 			weak<worldType> LoadWorld()
 			{
