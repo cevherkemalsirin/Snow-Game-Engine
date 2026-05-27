@@ -17,22 +17,32 @@ namespace snw
 	void Application::Run()
 	{
 		float accumulatedTime = 0.0f;
-		double frec = static_cast<double>(SDL_GetPerformanceFrequency());
+		double freq = static_cast<double>(SDL_GetPerformanceFrequency());
+
+		Uint64 lastCounter = SDL_GetPerformanceCounter();
 
 		while (m_running)
 		{
-			Uint64 lastCounter = SDL_GetPerformanceCounter();
-			m_inputController.Tick(m_fixedDt);//takes input
 			Uint64 currentCounter = SDL_GetPerformanceCounter();
-			double frameTime = (currentCounter - lastCounter) / frec;
-			accumulatedTime += static_cast<float>(frameTime);
+			double frameTime = static_cast<double>(currentCounter - lastCounter) / freq;
 			lastCounter = currentCounter;
+
+			// Optional safety clamp, prevents huge jump after breakpoint/window drag
+			if (frameTime > 0.25)
+			{
+				frameTime = 0.25;
+			}
+
+			accumulatedTime += static_cast<float>(frameTime);
+
+			m_inputController.Tick(m_fixedDt);
 
 			while (accumulatedTime >= m_fixedDt)
 			{
 				accumulatedTime -= m_fixedDt;
 				TickInternal(m_fixedDt);
 			}
+
 			RenderInternal();
 		}
 	}

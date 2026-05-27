@@ -28,9 +28,9 @@ public:
 	inline bool IsMovingLeft() const { return m_direction == PaddleDirection::LEFT; }
 	inline bool IsMovingRight() const { return m_direction == PaddleDirection::RIGHT; }
 	inline void StopMovement() { m_direction = PaddleDirection::STOP; }
-	void SetMovementDirection(PaddleDirection dir);
+	inline void SetMovementDirection(PaddleDirection dir) { m_direction = dir; }
 private:
 	PaddleDirection m_direction;
 
-	const float VELOCITY = 50.f;
+	const float VELOCITY = 300.f;
 };

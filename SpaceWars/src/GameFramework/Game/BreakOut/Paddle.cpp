@@ -19,7 +19,7 @@ void Paddle::Tick(float deltaTime)
 		{
 			dir = RIGTH_DIR;
 		}
-		Vector2D dx = dir * VELOCITY * (deltaTime / 1000.f);
+		Vector2D dx = dir * VELOCITY * deltaTime;
 
 		MoveBy(dx);
 	}
