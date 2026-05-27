@@ -13,4 +13,5 @@ public:
 	virtual void Tick(float deltaTime) = 0;
 	virtual void Render(Screen& screen) = 0;
 	virtual std::string GetName() const = 0;
+
 };

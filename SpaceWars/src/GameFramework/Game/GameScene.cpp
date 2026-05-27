@@ -4,7 +4,6 @@ GameScene::GameScene(snw::unique<Game> game):m_game(std::move(game))
 {
 
 }
-
 void GameScene::Init()
 {
 	m_game->Init(m_gameController);

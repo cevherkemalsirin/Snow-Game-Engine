@@ -23,6 +23,7 @@ namespace snw
 				return newWorld;
 			}
 
+			
 		protected:
 		 bool isAStarSolved{ false };
 			Screen m_screen;

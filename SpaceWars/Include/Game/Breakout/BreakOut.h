@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Game/Game.h"
+#include "Game/Breakout/Paddle.h"
+#include "Input/GameController.h"
 
 class BreakOut : public Game
 {
@@ -14,5 +16,7 @@ public:
 	virtual ~BreakOut() {};
 
 private:
+	Paddle m_paddle;
 
+	void ResetGame();
 };
