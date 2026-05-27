@@ -1,5 +1,7 @@
 #include "GameFramework/GameApplication.h"
 #include "Framework/World.h"
+#include "Game/BreakOut/BreakOut.h"
+#include "Game/GameScene.h"
 #include "Framework/Actor.h"
 #include "GameFrameWork/ArcadeScene.h"
 
@@ -20,6 +22,13 @@ namespace snw
 		 weak<World> world = LoadWorld<World>();
 		 m_arcadeScene = std::make_unique<ArcadeScene>();
 		 PushScene(std::move(m_arcadeScene));
+
+		 //temp
+		 {
+			 std::unique_ptr<BreakOut> breakOutGame = std::make_unique<BreakOut>();
+			 std::unique_ptr<GameScene> breakOutScene = std::make_unique<GameScene>(std::move(breakOutGame));
+			 PushScene(std::move(breakOutScene));
+		 }
 	}
 
 	void GameApplication::Tick(float dt)
